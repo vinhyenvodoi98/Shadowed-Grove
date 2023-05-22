@@ -22,6 +22,23 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    Hero: (() => {
+      const tableId = new TableId("", "Hero");
+      return defineComponent(
+        world,
+        {
+          health: RecsType.Number,
+          attack: RecsType.Number,
+          defence: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     EncounterTrigger: (() => {
       const tableId = new TableId("", "EncounterTrigger");
       return defineComponent(

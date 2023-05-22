@@ -17,6 +17,16 @@ export default mudConfig({
         catchAttempts: "uint256",
       },
     },
+    Hero: {
+      keySchema: {
+        player: "bytes32",
+      },
+      schema: {
+        health: "uint32",
+        attack: "uint32",
+        defence: "uint32",
+      }
+    },
     EncounterTrigger: "bool",
     Encounterable: "bool",
     MapConfig: {

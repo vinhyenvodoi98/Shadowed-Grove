@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 import { System } from "@latticexyz/world/src/System.sol";
-import { Encounter, EncounterData, Encounterable, EncounterTrigger, MapConfig, Monster, Movable, Obstruction, Player, Position } from "../codegen/Tables.sol";
+import { Encounter, EncounterData, Encounterable, EncounterTrigger, MapConfig, Monster, Movable, Hero, Obstruction, Player, Position } from "../codegen/Tables.sol";
 import { MonsterType } from "../codegen/Types.sol";
 import { addressToEntityKey } from "../addressToEntityKey.sol";
 import { positionToEntityKey } from "../positionToEntityKey.sol";
@@ -18,6 +18,11 @@ contract MapSystem is System {
 
     bytes32 position = positionToEntityKey(x, y);
     require(!Obstruction.get(position), "this space is obstructed");
+
+    uint32 health = 100;
+    uint32 attack = 10;
+    uint32 defence = 5;
+    Hero.set(player, health, attack, defence);
 
     Player.set(player, true);
     Position.set(player, x, y);
