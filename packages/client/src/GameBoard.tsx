@@ -1,12 +1,14 @@
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
-import { GameMap } from "./GameMap";
+import { GameMap } from "./maps/GameMap";
 import { useMUD } from "./MUDContext";
-import { useKeyboardMovement } from "./useKeyboardMovement";
+import { useKeyboardMovement } from "./game-controller/useKeyboardMovement";
 import { hexToArray } from "@latticexyz/utils";
-import { TerrainType, terrainTypes } from "./terrainTypes";
+import { TerrainType, terrainTypes } from "./types/terrainTypes";
 import { EncounterScreen } from "./EncounterScreen";
 import { Entity, Has, getComponentValueStrict } from "@latticexyz/recs";
-import { MonsterType, monsterTypes } from "./monsterTypes";
+import { MonsterType, monsterTypes } from "./types/monsterTypes";
+import Bag from "./components/bag";
+import Status from "./components/status";
 
 export const GameBoard = () => {
   useKeyboardMovement();
@@ -58,20 +60,28 @@ export const GameBoard = () => {
       : null;
 
   return (
-    <GameMap
-      width={width}
-      height={height}
-      terrain={terrain}
-      onTileClick={canSpawn ? spawn : undefined}
-      players={players}
-      encounter={
-        encounter ? (
-          <EncounterScreen
-            monsterName={monster?.name ?? "MissingNo"}
-            monsterEmoji={monster?.emoji ?? "💱"}
-          />
-        ) : undefined
-      }
-    />
+    <div className="relative">
+      <GameMap
+        width={width}
+        height={height}
+        terrain={terrain}
+        onTileClick={canSpawn ? spawn : undefined}
+        players={players}
+        encounter={
+          encounter ? (
+            <EncounterScreen
+              monsterName={monster?.name ?? "MissingNo"}
+              monsterEmoji={monster?.emoji ?? "💱"}
+            />
+          ) : undefined
+        }
+      />
+      <div className="absolute bottom-10 right-10">
+        <Bag />
+      </div>
+      <div className="absolute top-5 left-5">
+        <Status />
+      </div>
+    </div>
   );
 };

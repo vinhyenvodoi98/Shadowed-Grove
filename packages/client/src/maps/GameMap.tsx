@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Entity } from "@latticexyz/recs";
 import { twMerge } from "tailwind-merge";
-import { useMUD } from "./MUDContext";
+import { useMUD } from "../MUDContext";
 
 type Props = {
   width: number;
