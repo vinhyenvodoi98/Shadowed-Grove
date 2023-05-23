@@ -65,14 +65,17 @@ export function MonsterImage(id: any) {
   const {
     components: { Monsters },
     systemCalls: { },
-    network: { },
+    network: { playerEntity },
   } = useMUD()
   const monster = useComponentValue(Monsters, id.id)
-
-  return (
-    <div className="border-slate-100 rounded-md w-12 h-12 flex items-center justify-center bg-gray-200/50">
-      <img alt="image description" className="rounded-md"
-        src={`https://${monster?.image}.ipfs.nftstorage.link`} />
-    </div>
-  )
+  if(playerEntity && monster && monster.owner.includes(playerEntity.substring(2))){
+    return (
+      <div className="border-slate-100 rounded-md w-12 h-12 flex items-center justify-center bg-gray-200/50">
+        <img alt="image description" className="rounded-md"
+          src={`https://${monster?.image}.ipfs.nftstorage.link`} />
+      </div>
+    )
+  } else {
+    return <></>
+  }
 }

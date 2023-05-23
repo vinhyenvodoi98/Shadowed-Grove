@@ -5,4 +5,6 @@ pragma solidity >=0.8.0;
 
 interface IMonsterSystem {
   function generate(string memory image, uint32 x, uint32 y) external;
+
+  function fight(uint256 _id) external;
 }

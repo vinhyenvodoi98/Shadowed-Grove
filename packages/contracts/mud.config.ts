@@ -28,11 +28,11 @@ export default mudConfig({
     Monsters: {
       keySchema: {
         id: "uint256",
-        owner: "bytes32",
       },
       schema: {
         x: "uint32",
         y: "uint32",
+        owner: "bytes32",
         health: "uint32",
         attack: "uint32",
         defence: "uint32",
@@ -52,7 +52,6 @@ export default mudConfig({
     },
     Movable: "bool",
     Obstruction: "bool",
-    OwnedBy: "bytes32",
     Player: "bool",
     Position: {
       dataStruct: false,

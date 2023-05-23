@@ -12,7 +12,7 @@ export const GameBoard = () => {
   useKeyboardMovement();
 
   const {
-    components: { Monsters, MapConfig, Player, Position },
+    components: { MapConfig, Player, Position },
     network: { playerEntity, singletonEntity,storeCache },
     systemCalls: { spawn },
   } = useMUD();
@@ -48,6 +48,7 @@ export const GameBoard = () => {
   });
 
   const monsters = useRows(storeCache, { table: "Monsters"})
+  console.log({monsters})
   return (
     <div className="relative">
       <GameMap

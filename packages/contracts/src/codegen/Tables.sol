@@ -11,6 +11,5 @@ import { Encounterable, EncounterableTableId } from "./tables/Encounterable.sol"
 import { MapConfig, MapConfigTableId } from "./tables/MapConfig.sol";
 import { Movable, MovableTableId } from "./tables/Movable.sol";
 import { Obstruction, ObstructionTableId } from "./tables/Obstruction.sol";
-import { OwnedBy, OwnedByTableId } from "./tables/OwnedBy.sol";
 import { Player, PlayerTableId } from "./tables/Player.sol";
 import { Position, PositionTableId } from "./tables/Position.sol";

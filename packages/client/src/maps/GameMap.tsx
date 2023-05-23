@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Has } from "@latticexyz/recs";
 import { Entity } from "@latticexyz/recs";
+import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useMUD } from "../MUDContext";
+import { gearTypes, GearType } from "../types/gearTypes";
 
 type Props = {
   width: number;
@@ -32,7 +32,9 @@ export const GameMap = ({
 }: Props) => {
   const {
     network: { playerEntity },
+    systemCalls: { fight },
   } = useMUD();
+  const [shouldTrigger, setShouldTrigger] = useState(0)
 
   const rows = new Array(width).fill(0).map((_, i) => i);
   const columns = new Array(height).fill(0).map((_, i) => i);
@@ -50,7 +52,11 @@ export const GameMap = ({
             (p) => p.entity === playerEntity
           );
 
-          const monstersDataHere = monsters?.filter((p) => p.value.x === x && p.value.y === y)
+          const monstersDataHere = monsters?.filter((p) => p.value.x === x && p.value.y === y && p.value.owner.includes("f39fd6e51aad88f6f4ce6ab8827279cfffb92266"))
+          if(playersHere && monstersDataHere && monstersDataHere.length > 0 && playersHere.length > 0 && monstersDataHere[0].value.x === playersHere[0].x && monstersDataHere[0].value.y === playersHere[0].y){
+            console.log("fight")
+            fight(monstersDataHere[0].key.id, monstersDataHere[0].value.x, monstersDataHere[0].value.y)
+          }
           return (
             <div
               key={`${x},${y}`}
@@ -74,6 +80,11 @@ export const GameMap = ({
                 ) : null}
                 {monstersDataHere && monstersDataHere[0] ? (
                   <div className="absolute inset-0 flex items-center justify-center top-[-16px] left-[-16px] h-8 w-8 pointer-events-none">
+                    <div className="absolute bg-slate-500/50 w-16 h-8 top-[-32px] rounded" >
+                      <div className="p-1">
+                        { gearTypes[GearType.Heart].emoji }: {monstersDataHere[0].value.health}
+                      </div>
+                    </div>
                     <img alt="image description" className="rounded-md top-0"
                       src={`https://${monstersDataHere[0].value.image}.ipfs.nftstorage.link`} />
                   </div>

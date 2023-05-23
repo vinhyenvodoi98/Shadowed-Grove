@@ -46,6 +46,7 @@ export function defineContractComponents(world: World) {
         {
           x: RecsType.Number,
           y: RecsType.Number,
+          owner: RecsType.String,
           health: RecsType.Number,
           attack: RecsType.Number,
           defence: RecsType.Number,
@@ -127,21 +128,6 @@ export function defineContractComponents(world: World) {
         world,
         {
           value: RecsType.Boolean,
-        },
-        {
-          metadata: {
-            contractId: tableId.toHexString(),
-            tableId: tableId.toString(),
-          },
-        }
-      );
-    })(),
-    OwnedBy: (() => {
-      const tableId = new TableId("", "OwnedBy");
-      return defineComponent(
-        world,
-        {
-          value: RecsType.String,
         },
         {
           metadata: {

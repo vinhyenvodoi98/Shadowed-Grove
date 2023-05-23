@@ -1,4 +1,4 @@
-import { Has, HasValue, getComponentValue, runQuery } from "@latticexyz/recs";
+import { Has, HasValue, getComponentValue, runQuery, Entity } from "@latticexyz/recs";
 import { uuid, awaitStreamValue } from "@latticexyz/utils";
 import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
@@ -13,6 +13,7 @@ export function createSystemCalls(
     Obstruction,
     Player,
     Position,
+    Monsters,
   }: ClientComponents
 ) {
   const wrapPosition = (x: number, y: number) => {
@@ -111,9 +112,18 @@ export function createSystemCalls(
     }
   };
 
+  const fight = async (id: any, x: number, y:number) => {
+    Monsters.addOverride(id, {
+      entity: id,
+      value: { x, y },
+    });
+    await worldSend("fight", [id]);
+  }
+
   return {
     moveTo,
     moveBy,
     spawn,
+    fight
   };
 }
