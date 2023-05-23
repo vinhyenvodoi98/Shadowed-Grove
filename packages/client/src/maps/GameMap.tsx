@@ -1,8 +1,9 @@
 import { Entity } from "@latticexyz/recs";
-import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useMUD } from "../MUDContext";
 import { gearTypes, GearType } from "../types/gearTypes";
+import cloverImage from '../assets/clover.png';
+import manImage from '../assets/man.png';
 
 type Props = {
   width: number;
@@ -34,13 +35,12 @@ export const GameMap = ({
     network: { playerEntity },
     systemCalls: { fight },
   } = useMUD();
-  const [shouldTrigger, setShouldTrigger] = useState(0)
 
   const rows = new Array(width).fill(0).map((_, i) => i);
   const columns = new Array(height).fill(0).map((_, i) => i);
 
   return (
-    <div className="inline-grid p-2 bg-lime-500 relative overflow-hidden">
+    <div className="inline-grid p-2 bg-gray-700 relative overflow-hidden">
       {rows.map((y) =>
         columns.map((x) => {
           const terrainEmoji = terrain?.find(
@@ -61,12 +61,13 @@ export const GameMap = ({
             <div
               key={`${x},${y}`}
               className={twMerge(
-                "w-8 h-8 flex items-center justify-center",
+                "w-8 h-8 flex items-center justify-center bg-cover bg-center",
                 onTileClick ? "cursor-pointer hover:ring" : null
-              )}
+              ) }
               style={{
                 gridColumn: x + 1,
                 gridRow: y + 1,
+                backgroundImage: `url(${cloverImage})`
               }}
               onClick={() => {
                 onTileClick?.(x, y);
@@ -74,9 +75,7 @@ export const GameMap = ({
             >
               <div className="flex flex-wrap gap-1 items-center justify-center relative">
                 {terrainEmoji ? (
-                  <div className="absolute inset-0 flex items-center justify-center text-3xl pointer-events-none">
-                    {terrainEmoji}
-                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center w-8 h-8 top-[-16px] left-[-16px] bg-cover bg-center pointer-events-none" style={{ backgroundImage: `url(${terrainEmoji})`}} />
                 ) : null}
                 {monstersDataHere && monstersDataHere[0] ? (
                   <div className="absolute inset-0 flex items-center justify-center top-[-16px] left-[-16px] h-8 w-8 pointer-events-none">
@@ -91,7 +90,7 @@ export const GameMap = ({
                 ) : null}
                 <div className="relative">
                   {playersHere?.map((p) => (
-                    <span key={p.entity}>{p.emoji}</span>
+                    <div key={p.entity} className="h-8 w-8 top-[-16px] left-[-16px] bg-center bg-cover pointer-events-none" style={{ backgroundImage: `url(${manImage})`}}></div>
                   ))}
                 </div>
               </div>
