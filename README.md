@@ -10,8 +10,6 @@ Shadowed Grove is an immersive video game that revolves around a hidden world in
 ## Environment:
 The Aerandir Forest is a dense woodland environment with distinctive flora, combining elements of nature and magic seamlessly.
 
-Aerandir Tribe: The Aerandir tribe is a special clan of sorcerers with profound knowledge and magical powers.
-
 ## Challenge:
 In the game, players assume the role of a newly initiated sorcerer who joins the Aerandir tribe. The forest has fallen under a curse, transforming its creatures into monstrous beings. Players embark on a journey to explore this mysterious forest, facing various challenges along the way. These challenges may include defeating magical creatures, with each victory granting the player valuable items and rewards.
 
