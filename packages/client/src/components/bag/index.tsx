@@ -1,15 +1,8 @@
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
-import { Entity, Has } from "@latticexyz/recs";
-import { useEffect, useState } from "react";
+import { Has } from "@latticexyz/recs";
+import { useState } from "react";
 import { useMUD } from "../../MUDContext";
 import { gearTypes, GearType } from "../../types/gearTypes";
-
-// interface Monstersface {
-//   health: Number;
-//   attack: Number;
-//   defence: Number;
-//   image: String;
-// }
 
 export default function Bag() {
   const {
@@ -75,7 +68,7 @@ export function MonsterImage(id: any) {
     network: { },
   } = useMUD()
   const monster = useComponentValue(Monsters, id.id)
-  console.log({monster})
+
   return (
     <div className="border-slate-100 rounded-md w-12 h-12 flex items-center justify-center bg-gray-200/50">
       <img alt="image description" className="rounded-md"

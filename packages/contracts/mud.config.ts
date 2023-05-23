@@ -31,6 +31,8 @@ export default mudConfig({
         owner: "bytes32",
       },
       schema: {
+        x: "uint32",
+        y: "uint32",
         health: "uint32",
         attack: "uint32",
         defence: "uint32",
@@ -48,16 +50,6 @@ export default mudConfig({
         terrain: "bytes",
       },
     },
-    // MonsterCatchAttempt: {
-    //   ephemeral: true,
-    //   dataStruct: false,
-    //   keySchema: {
-    //     encounter: "bytes32",
-    //   },
-    //   schema: {
-    //     result: "MonsterCatchResult",
-    //   },
-    // },
     Movable: "bool",
     Obstruction: "bool",
     OwnedBy: "bytes32",

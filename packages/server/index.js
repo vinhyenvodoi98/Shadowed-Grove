@@ -16,13 +16,14 @@ const main = async () => {
   console.log(monsterSystemContract)
   // const image = await monsterBuilder()
   const image = "bafybeig5ouxzjhankpl5m22dhr22dpkfareb346anj2aroguh3wjz6sdaa"
-  await instanceMonsterSystem.methods.generate(image).send({
+  const x = Math.floor(Math.random() * 20);
+  const y = Math.floor(Math.random() * 20);
+  await instanceMonsterSystem.methods.generate(image,x,y).send({
     from: account.address,
     gasLimit: 3000000,
     gasPrice: 5000000000
   })
-  const sdimage = await instanceMonsterSystem.methods.getMonster(0).call()
-  console.log("sdsds: ",sdimage)
+
   console.log("create done")
 }
 

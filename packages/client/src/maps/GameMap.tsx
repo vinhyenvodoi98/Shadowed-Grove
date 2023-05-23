@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState } from "react";
+import { useState } from "react";
+import { Has } from "@latticexyz/recs";
 import { Entity } from "@latticexyz/recs";
 import { twMerge } from "tailwind-merge";
 import { useMUD } from "../MUDContext";
@@ -18,6 +19,7 @@ type Props = {
     emoji: string;
     entity: Entity;
   }[];
+  monsters?: any[]
 };
 
 export const GameMap = ({
@@ -26,6 +28,7 @@ export const GameMap = ({
   onTileClick,
   terrain,
   players,
+  monsters,
 }: Props) => {
   const {
     network: { playerEntity },
@@ -33,9 +36,6 @@ export const GameMap = ({
 
   const rows = new Array(width).fill(0).map((_, i) => i);
   const columns = new Array(height).fill(0).map((_, i) => i);
-
-  const [showEncounter, setShowEncounter] = useState(false);
-  // Reset show encounter when we leave encounter
 
   return (
     <div className="inline-grid p-2 bg-lime-500 relative overflow-hidden">
@@ -50,6 +50,7 @@ export const GameMap = ({
             (p) => p.entity === playerEntity
           );
 
+          const monstersDataHere = monsters?.filter((p) => p.value.x === x && p.value.y === y)
           return (
             <div
               key={`${x},${y}`}
@@ -69,6 +70,12 @@ export const GameMap = ({
                 {terrainEmoji ? (
                   <div className="absolute inset-0 flex items-center justify-center text-3xl pointer-events-none">
                     {terrainEmoji}
+                  </div>
+                ) : null}
+                {monstersDataHere && monstersDataHere[0] ? (
+                  <div className="absolute inset-0 flex items-center justify-center top-[-16px] left-[-16px] h-8 w-8 pointer-events-none">
+                    <img alt="image description" className="rounded-md top-0"
+                      src={`https://${monstersDataHere[0].value.image}.ipfs.nftstorage.link`} />
                   </div>
                 ) : null}
                 <div className="relative">

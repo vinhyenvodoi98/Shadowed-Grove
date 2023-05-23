@@ -44,6 +44,8 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
+          x: RecsType.Number,
+          y: RecsType.Number,
           health: RecsType.Number,
           attack: RecsType.Number,
           defence: RecsType.Number,

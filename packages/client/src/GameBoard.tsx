@@ -1,10 +1,10 @@
-import { useComponentValue, useEntityQuery } from "@latticexyz/react";
+import { useComponentValue, useEntityQuery, useRow, useRows } from "@latticexyz/react";
 import { GameMap } from "./maps/GameMap";
 import { useMUD } from "./MUDContext";
 import { useKeyboardMovement } from "./game-controller/useKeyboardMovement";
 import { hexToArray } from "@latticexyz/utils";
 import { TerrainType, terrainTypes } from "./types/terrainTypes";
-import { Has, getComponentValueStrict } from "@latticexyz/recs";
+import { Has, getComponentValueStrict, Entity } from "@latticexyz/recs";
 import Bag from "./components/bag";
 import Status from "./components/status";
 
@@ -12,8 +12,8 @@ export const GameBoard = () => {
   useKeyboardMovement();
 
   const {
-    components: { Encounter, MapConfig, Player, Position },
-    network: { playerEntity, singletonEntity },
+    components: { Monsters, MapConfig, Player, Position },
+    network: { playerEntity, singletonEntity,storeCache },
     systemCalls: { spawn },
   } = useMUD();
 
@@ -47,6 +47,7 @@ export const GameBoard = () => {
     };
   });
 
+  const monsters = useRows(storeCache, { table: "Monsters"})
   return (
     <div className="relative">
       <GameMap
@@ -55,6 +56,7 @@ export const GameBoard = () => {
         terrain={terrain}
         onTileClick={canSpawn ? spawn : undefined}
         players={players}
+        monsters={monsters}
       />
       <div className="absolute bottom-10 right-10">
         <Bag />

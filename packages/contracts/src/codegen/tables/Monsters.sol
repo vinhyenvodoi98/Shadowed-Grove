@@ -21,6 +21,8 @@ bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16(""), bytes16("Monst
 bytes32 constant MonstersTableId = _tableId;
 
 struct MonstersData {
+  uint32 x;
+  uint32 y;
   uint32 health;
   uint32 attack;
   uint32 defence;
@@ -30,11 +32,13 @@ struct MonstersData {
 library Monsters {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
-    SchemaType[] memory _schema = new SchemaType[](4);
+    SchemaType[] memory _schema = new SchemaType[](6);
     _schema[0] = SchemaType.UINT32;
     _schema[1] = SchemaType.UINT32;
     _schema[2] = SchemaType.UINT32;
-    _schema[3] = SchemaType.STRING;
+    _schema[3] = SchemaType.UINT32;
+    _schema[4] = SchemaType.UINT32;
+    _schema[5] = SchemaType.STRING;
 
     return SchemaLib.encode(_schema);
   }
@@ -49,11 +53,13 @@ library Monsters {
 
   /** Get the table's metadata */
   function getMetadata() internal pure returns (string memory, string[] memory) {
-    string[] memory _fieldNames = new string[](4);
-    _fieldNames[0] = "health";
-    _fieldNames[1] = "attack";
-    _fieldNames[2] = "defence";
-    _fieldNames[3] = "image";
+    string[] memory _fieldNames = new string[](6);
+    _fieldNames[0] = "x";
+    _fieldNames[1] = "y";
+    _fieldNames[2] = "health";
+    _fieldNames[3] = "attack";
+    _fieldNames[4] = "defence";
+    _fieldNames[5] = "image";
     return ("Monsters", _fieldNames);
   }
 
@@ -79,13 +85,89 @@ library Monsters {
     _store.setMetadata(_tableId, _tableName, _fieldNames);
   }
 
+  /** Get x */
+  function getX(uint256 id, bytes32 owner) internal view returns (uint32 x) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = bytes32(uint256((id)));
+    _keyTuple[1] = bytes32((owner));
+
+    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 0);
+    return (uint32(Bytes.slice4(_blob, 0)));
+  }
+
+  /** Get x (using the specified store) */
+  function getX(IStore _store, uint256 id, bytes32 owner) internal view returns (uint32 x) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = bytes32(uint256((id)));
+    _keyTuple[1] = bytes32((owner));
+
+    bytes memory _blob = _store.getField(_tableId, _keyTuple, 0);
+    return (uint32(Bytes.slice4(_blob, 0)));
+  }
+
+  /** Set x */
+  function setX(uint256 id, bytes32 owner, uint32 x) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = bytes32(uint256((id)));
+    _keyTuple[1] = bytes32((owner));
+
+    StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((x)));
+  }
+
+  /** Set x (using the specified store) */
+  function setX(IStore _store, uint256 id, bytes32 owner, uint32 x) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = bytes32(uint256((id)));
+    _keyTuple[1] = bytes32((owner));
+
+    _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((x)));
+  }
+
+  /** Get y */
+  function getY(uint256 id, bytes32 owner) internal view returns (uint32 y) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = bytes32(uint256((id)));
+    _keyTuple[1] = bytes32((owner));
+
+    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 1);
+    return (uint32(Bytes.slice4(_blob, 0)));
+  }
+
+  /** Get y (using the specified store) */
+  function getY(IStore _store, uint256 id, bytes32 owner) internal view returns (uint32 y) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = bytes32(uint256((id)));
+    _keyTuple[1] = bytes32((owner));
+
+    bytes memory _blob = _store.getField(_tableId, _keyTuple, 1);
+    return (uint32(Bytes.slice4(_blob, 0)));
+  }
+
+  /** Set y */
+  function setY(uint256 id, bytes32 owner, uint32 y) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = bytes32(uint256((id)));
+    _keyTuple[1] = bytes32((owner));
+
+    StoreSwitch.setField(_tableId, _keyTuple, 1, abi.encodePacked((y)));
+  }
+
+  /** Set y (using the specified store) */
+  function setY(IStore _store, uint256 id, bytes32 owner, uint32 y) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = bytes32(uint256((id)));
+    _keyTuple[1] = bytes32((owner));
+
+    _store.setField(_tableId, _keyTuple, 1, abi.encodePacked((y)));
+  }
+
   /** Get health */
   function getHealth(uint256 id, bytes32 owner) internal view returns (uint32 health) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 0);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 2);
     return (uint32(Bytes.slice4(_blob, 0)));
   }
 
@@ -95,7 +177,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 0);
+    bytes memory _blob = _store.getField(_tableId, _keyTuple, 2);
     return (uint32(Bytes.slice4(_blob, 0)));
   }
 
@@ -105,7 +187,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((health)));
+    StoreSwitch.setField(_tableId, _keyTuple, 2, abi.encodePacked((health)));
   }
 
   /** Set health (using the specified store) */
@@ -114,7 +196,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((health)));
+    _store.setField(_tableId, _keyTuple, 2, abi.encodePacked((health)));
   }
 
   /** Get attack */
@@ -123,7 +205,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 1);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 3);
     return (uint32(Bytes.slice4(_blob, 0)));
   }
 
@@ -133,7 +215,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 1);
+    bytes memory _blob = _store.getField(_tableId, _keyTuple, 3);
     return (uint32(Bytes.slice4(_blob, 0)));
   }
 
@@ -143,7 +225,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    StoreSwitch.setField(_tableId, _keyTuple, 1, abi.encodePacked((attack)));
+    StoreSwitch.setField(_tableId, _keyTuple, 3, abi.encodePacked((attack)));
   }
 
   /** Set attack (using the specified store) */
@@ -152,7 +234,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    _store.setField(_tableId, _keyTuple, 1, abi.encodePacked((attack)));
+    _store.setField(_tableId, _keyTuple, 3, abi.encodePacked((attack)));
   }
 
   /** Get defence */
@@ -161,7 +243,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 2);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 4);
     return (uint32(Bytes.slice4(_blob, 0)));
   }
 
@@ -171,7 +253,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 2);
+    bytes memory _blob = _store.getField(_tableId, _keyTuple, 4);
     return (uint32(Bytes.slice4(_blob, 0)));
   }
 
@@ -181,7 +263,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    StoreSwitch.setField(_tableId, _keyTuple, 2, abi.encodePacked((defence)));
+    StoreSwitch.setField(_tableId, _keyTuple, 4, abi.encodePacked((defence)));
   }
 
   /** Set defence (using the specified store) */
@@ -190,7 +272,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    _store.setField(_tableId, _keyTuple, 2, abi.encodePacked((defence)));
+    _store.setField(_tableId, _keyTuple, 4, abi.encodePacked((defence)));
   }
 
   /** Get image */
@@ -199,7 +281,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 3);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 5);
     return (string(_blob));
   }
 
@@ -209,7 +291,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 3);
+    bytes memory _blob = _store.getField(_tableId, _keyTuple, 5);
     return (string(_blob));
   }
 
@@ -219,7 +301,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    StoreSwitch.setField(_tableId, _keyTuple, 3, bytes((image)));
+    StoreSwitch.setField(_tableId, _keyTuple, 5, bytes((image)));
   }
 
   /** Set image (using the specified store) */
@@ -228,7 +310,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    _store.setField(_tableId, _keyTuple, 3, bytes((image)));
+    _store.setField(_tableId, _keyTuple, 5, bytes((image)));
   }
 
   /** Get the length of image */
@@ -237,7 +319,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    uint256 _byteLength = StoreSwitch.getFieldLength(_tableId, _keyTuple, 3, getSchema());
+    uint256 _byteLength = StoreSwitch.getFieldLength(_tableId, _keyTuple, 5, getSchema());
     return _byteLength / 1;
   }
 
@@ -247,7 +329,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    uint256 _byteLength = _store.getFieldLength(_tableId, _keyTuple, 3, getSchema());
+    uint256 _byteLength = _store.getFieldLength(_tableId, _keyTuple, 5, getSchema());
     return _byteLength / 1;
   }
 
@@ -257,7 +339,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = StoreSwitch.getFieldSlice(_tableId, _keyTuple, 3, getSchema(), _index * 1, (_index + 1) * 1);
+    bytes memory _blob = StoreSwitch.getFieldSlice(_tableId, _keyTuple, 5, getSchema(), _index * 1, (_index + 1) * 1);
     return (string(_blob));
   }
 
@@ -272,7 +354,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    bytes memory _blob = _store.getFieldSlice(_tableId, _keyTuple, 3, getSchema(), _index * 1, (_index + 1) * 1);
+    bytes memory _blob = _store.getFieldSlice(_tableId, _keyTuple, 5, getSchema(), _index * 1, (_index + 1) * 1);
     return (string(_blob));
   }
 
@@ -282,7 +364,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    StoreSwitch.pushToField(_tableId, _keyTuple, 3, bytes((_slice)));
+    StoreSwitch.pushToField(_tableId, _keyTuple, 5, bytes((_slice)));
   }
 
   /** Push a slice to image (using the specified store) */
@@ -291,7 +373,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    _store.pushToField(_tableId, _keyTuple, 3, bytes((_slice)));
+    _store.pushToField(_tableId, _keyTuple, 5, bytes((_slice)));
   }
 
   /** Pop a slice from image */
@@ -300,7 +382,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    StoreSwitch.popFromField(_tableId, _keyTuple, 3, 1);
+    StoreSwitch.popFromField(_tableId, _keyTuple, 5, 1);
   }
 
   /** Pop a slice from image (using the specified store) */
@@ -309,7 +391,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    _store.popFromField(_tableId, _keyTuple, 3, 1);
+    _store.popFromField(_tableId, _keyTuple, 5, 1);
   }
 
   /** Update a slice of image at `_index` */
@@ -318,7 +400,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    StoreSwitch.updateInField(_tableId, _keyTuple, 3, _index * 1, bytes((_slice)));
+    StoreSwitch.updateInField(_tableId, _keyTuple, 5, _index * 1, bytes((_slice)));
   }
 
   /** Update a slice of image (using the specified store) at `_index` */
@@ -327,7 +409,7 @@ library Monsters {
     _keyTuple[0] = bytes32(uint256((id)));
     _keyTuple[1] = bytes32((owner));
 
-    _store.updateInField(_tableId, _keyTuple, 3, _index * 1, bytes((_slice)));
+    _store.updateInField(_tableId, _keyTuple, 5, _index * 1, bytes((_slice)));
   }
 
   /** Get the full data */
@@ -351,8 +433,17 @@ library Monsters {
   }
 
   /** Set the full data using individual values */
-  function set(uint256 id, bytes32 owner, uint32 health, uint32 attack, uint32 defence, string memory image) internal {
-    bytes memory _data = encode(health, attack, defence, image);
+  function set(
+    uint256 id,
+    bytes32 owner,
+    uint32 x,
+    uint32 y,
+    uint32 health,
+    uint32 attack,
+    uint32 defence,
+    string memory image
+  ) internal {
+    bytes memory _data = encode(x, y, health, attack, defence, image);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((id)));
@@ -366,12 +457,14 @@ library Monsters {
     IStore _store,
     uint256 id,
     bytes32 owner,
+    uint32 x,
+    uint32 y,
     uint32 health,
     uint32 attack,
     uint32 defence,
     string memory image
   ) internal {
-    bytes memory _data = encode(health, attack, defence, image);
+    bytes memory _data = encode(x, y, health, attack, defence, image);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((id)));
@@ -382,30 +475,34 @@ library Monsters {
 
   /** Set the full data using the data struct */
   function set(uint256 id, bytes32 owner, MonstersData memory _table) internal {
-    set(id, owner, _table.health, _table.attack, _table.defence, _table.image);
+    set(id, owner, _table.x, _table.y, _table.health, _table.attack, _table.defence, _table.image);
   }
 
   /** Set the full data using the data struct (using the specified store) */
   function set(IStore _store, uint256 id, bytes32 owner, MonstersData memory _table) internal {
-    set(_store, id, owner, _table.health, _table.attack, _table.defence, _table.image);
+    set(_store, id, owner, _table.x, _table.y, _table.health, _table.attack, _table.defence, _table.image);
   }
 
   /** Decode the tightly packed blob using this table's schema */
   function decode(bytes memory _blob) internal view returns (MonstersData memory _table) {
-    // 12 is the total byte length of static data
-    PackedCounter _encodedLengths = PackedCounter.wrap(Bytes.slice32(_blob, 12));
+    // 20 is the total byte length of static data
+    PackedCounter _encodedLengths = PackedCounter.wrap(Bytes.slice32(_blob, 20));
 
-    _table.health = (uint32(Bytes.slice4(_blob, 0)));
+    _table.x = (uint32(Bytes.slice4(_blob, 0)));
 
-    _table.attack = (uint32(Bytes.slice4(_blob, 4)));
+    _table.y = (uint32(Bytes.slice4(_blob, 4)));
 
-    _table.defence = (uint32(Bytes.slice4(_blob, 8)));
+    _table.health = (uint32(Bytes.slice4(_blob, 8)));
+
+    _table.attack = (uint32(Bytes.slice4(_blob, 12)));
+
+    _table.defence = (uint32(Bytes.slice4(_blob, 16)));
 
     // Store trims the blob if dynamic fields are all empty
-    if (_blob.length > 12) {
+    if (_blob.length > 20) {
       uint256 _start;
       // skip static data length + dynamic lengths word
-      uint256 _end = 44;
+      uint256 _end = 52;
 
       _start = _end;
       _end += _encodedLengths.atIndex(0);
@@ -415,6 +512,8 @@ library Monsters {
 
   /** Tightly pack full data using this table's schema */
   function encode(
+    uint32 x,
+    uint32 y,
     uint32 health,
     uint32 attack,
     uint32 defence,
@@ -424,7 +523,7 @@ library Monsters {
     _counters[0] = uint40(bytes(image).length);
     PackedCounter _encodedLengths = PackedCounterLib.pack(_counters);
 
-    return abi.encodePacked(health, attack, defence, _encodedLengths.unwrap(), bytes((image)));
+    return abi.encodePacked(x, y, health, attack, defence, _encodedLengths.unwrap(), bytes((image)));
   }
 
   /** Encode keys as a bytes32 array using this table's schema */

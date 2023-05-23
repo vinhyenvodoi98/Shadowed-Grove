@@ -6,7 +6,7 @@ import { addressToEntityKey } from "../addressToEntityKey.sol";
 
 contract MonsterSystem is System {
   uint256 public id;
-  function generate(string memory image) public {
+  function generate(string memory image, uint32 x, uint32 y) public {
     address monsterOwner = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
 
     require(_msgSender() == monsterOwner, "not in encounter");
@@ -18,17 +18,13 @@ contract MonsterSystem is System {
 
     // Monsters.set(id, player, health, attack, defence, image);
     Monsters.set(id, owner, MonstersData({
+      x: x,
+      y: y,
       health: health,
       attack: attack,
       defence: defence,
       image: image
     }));
     id += 1;
-  }
-
-  function getMonster(uint256 _id) public returns(string memory) {
-    bytes32 owner = addressToEntityKey(_msgSender());
-    string memory image = Monsters.getImage(_id, owner);
-    return image;
   }
 }
