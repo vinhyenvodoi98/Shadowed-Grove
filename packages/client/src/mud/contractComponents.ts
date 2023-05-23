@@ -39,6 +39,24 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    Monsters: (() => {
+      const tableId = new TableId("", "Monsters");
+      return defineComponent(
+        world,
+        {
+          health: RecsType.Number,
+          attack: RecsType.Number,
+          defence: RecsType.Number,
+          image: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     EncounterTrigger: (() => {
       const tableId = new TableId("", "EncounterTrigger");
       return defineComponent(
@@ -77,36 +95,6 @@ export function defineContractComponents(world: World) {
           width: RecsType.Number,
           height: RecsType.Number,
           terrain: RecsType.String,
-        },
-        {
-          metadata: {
-            contractId: tableId.toHexString(),
-            tableId: tableId.toString(),
-          },
-        }
-      );
-    })(),
-    MonsterCatchAttempt: (() => {
-      const tableId = new TableId("", "MonsterCatchAtte");
-      return defineComponent(
-        world,
-        {
-          result: RecsType.Number,
-        },
-        {
-          metadata: {
-            contractId: tableId.toHexString(),
-            tableId: tableId.toString(),
-          },
-        }
-      );
-    })(),
-    Monster: (() => {
-      const tableId = new TableId("", "Monster");
-      return defineComponent(
-        world,
-        {
-          value: RecsType.Number,
         },
         {
           metadata: {

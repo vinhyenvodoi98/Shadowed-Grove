@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useComponentValue, useEntityQuery } from "@latticexyz/react";
+import { Entity, Has } from "@latticexyz/recs";
+import { useEffect, useState } from "react";
+import { useMUD } from "../../MUDContext";
 import { gearTypes, GearType } from "../../types/gearTypes";
 
+// interface Monstersface {
+//   health: Number;
+//   attack: Number;
+//   defence: Number;
+//   image: String;
+// }
+
 export default function Bag() {
-  const stuffs = ["🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸","🧸"]
+  const {
+    components: { Monsters },
+    systemCalls: { },
+    network: { },
+  } = useMUD()
+  // let master: Entity = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+  const monsters = useEntityQuery([Has(Monsters)])
 
   const [showModal, setShowModal] = useState(false);
   return (
     <>
       <button className="bg-slate-500/50 font-semibold w-12 h-12 py-2 px-2 rounded-full"
         type="button"
+        // onClick={()=> generate()}
         onClick={() => setShowModal(true)}
       >
         { gearTypes[GearType.Bag].emoji }
@@ -37,8 +54,8 @@ export default function Bag() {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 grid grid-cols-5 gap-4">
-                  {stuffs.map(stuffs => (
-                    <div className="border-slate-100 rounded-md w-12 h-12 flex items-center justify-center bg-gray-200/50">{stuffs}</div>
+                  {monsters.map((monster, id) => (
+                    <MonsterImage id={monster} key={id} />
                   ))}
                 </div>
               </div>
@@ -48,5 +65,21 @@ export default function Bag() {
         </>
       ) : null}
     </>
+  )
+}
+
+export function MonsterImage(id: any) {
+  const {
+    components: { Monsters },
+    systemCalls: { },
+    network: { },
+  } = useMUD()
+  const monster = useComponentValue(Monsters, id.id)
+  console.log({monster})
+  return (
+    <div className="border-slate-100 rounded-md w-12 h-12 flex items-center justify-center bg-gray-200/50">
+      <img alt="image description" className="rounded-md"
+        src={`https://${monster?.image}.ipfs.nftstorage.link`} />
+    </div>
   )
 }

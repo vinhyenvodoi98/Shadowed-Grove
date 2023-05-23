@@ -1,11 +1,35 @@
 const Web3 = require('web3');
 const { ANVIL } = require('./config/network');
+const { monsterBuilder } = require('./createMonster');
+const MonsterAbi = require('./out/IMonsterSystem.sol/IMonsterSystem.json')
+const world = require("./worlds.json")
+
+require('dotenv').config()
 
 const main = async () => {
   const web3 = new Web3(ANVIL.providerOrUrl)
-  const address = "0x0693D1E741EB47543A83Ea861F6BAd396b57AaF2"
+  const account = web3.eth.accounts.wallet.add(process.env.PRIVATE_KEY)
+  getBalance(account.address)
+
+  const monsterSystemContract = world[ANVIL.chainId].address
+  const instanceMonsterSystem = new web3.eth.Contract(MonsterAbi.abi, monsterSystemContract)
+  console.log(monsterSystemContract)
+  // const image = await monsterBuilder()
+  const image = "bafybeig5ouxzjhankpl5m22dhr22dpkfareb346anj2aroguh3wjz6sdaa"
+  await instanceMonsterSystem.methods.generate(image).send({
+    from: account.address,
+    gasLimit: 3000000,
+    gasPrice: 5000000000
+  })
+  const sdimage = await instanceMonsterSystem.methods.getMonster(0).call()
+  console.log("sdsds: ",sdimage)
+  console.log("create done")
+}
+
+const getBalance = async(address) => {
+  const web3 = new Web3(ANVIL.providerOrUrl)
   let balance = await web3.eth.getBalance(address)
-  console.log("Addresses Balance: ",balance)
+  console.log("Master Addresses Balance: ",balance)
 }
 
 main()

@@ -7,7 +7,6 @@ export default function Status() {
     components: { Hero },
     network: { playerEntity },
   } = useMUD()
-
   const status = useComponentValue(Hero, playerEntity);
   return (
     <div className="bg-slate-500/50 w-64 h-8 rounded grid grid-cols-3" >

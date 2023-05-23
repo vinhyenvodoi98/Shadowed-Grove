@@ -5,11 +5,10 @@ pragma solidity >=0.8.0;
 
 import { Encounter, EncounterData, EncounterTableId } from "./tables/Encounter.sol";
 import { Hero, HeroData, HeroTableId } from "./tables/Hero.sol";
+import { Monsters, MonstersData, MonstersTableId } from "./tables/Monsters.sol";
 import { EncounterTrigger, EncounterTriggerTableId } from "./tables/EncounterTrigger.sol";
 import { Encounterable, EncounterableTableId } from "./tables/Encounterable.sol";
 import { MapConfig, MapConfigTableId } from "./tables/MapConfig.sol";
-import { MonsterCatchAttempt, MonsterCatchAttemptTableId } from "./tables/MonsterCatchAttempt.sol";
-import { Monster, MonsterTableId } from "./tables/Monster.sol";
 import { Movable, MovableTableId } from "./tables/Movable.sol";
 import { Obstruction, ObstructionTableId } from "./tables/Obstruction.sol";
 import { OwnedBy, OwnedByTableId } from "./tables/OwnedBy.sol";

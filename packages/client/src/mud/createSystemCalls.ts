@@ -1,6 +1,5 @@
 import { Has, HasValue, getComponentValue, runQuery } from "@latticexyz/recs";
 import { uuid, awaitStreamValue } from "@latticexyz/utils";
-import { MonsterCatchResult } from "../monsterCatchResult";
 import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
 
@@ -11,7 +10,6 @@ export function createSystemCalls(
   {
     Encounter,
     MapConfig,
-    MonsterCatchAttempt,
     Obstruction,
     Player,
     Position,
@@ -113,38 +111,9 @@ export function createSystemCalls(
     }
   };
 
-  const throwBall = async () => {
-    const player = playerEntity;
-    if (!player) {
-      throw new Error("no player");
-    }
-
-    const encounter = getComponentValue(Encounter, player);
-    if (!encounter) {
-      throw new Error("no encounter");
-    }
-
-    const tx = await worldSend("throwBall", []);
-    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
-
-    const catchAttempt = getComponentValue(MonsterCatchAttempt, player);
-    if (!catchAttempt) {
-      throw new Error("no catch attempt found");
-    }
-
-    return catchAttempt.result as MonsterCatchResult;
-  };
-
-  const fleeEncounter = async () => {
-    const tx = await worldSend("flee", []);
-    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
-  };
-
   return {
     moveTo,
     moveBy,
     spawn,
-    throwBall,
-    fleeEncounter,
   };
 }

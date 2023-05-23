@@ -2,8 +2,6 @@ import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
   enums: {
-    MonsterCatchResult: ["Missed", "Caught", "Fled"],
-    MonsterType: ["None", "Eagle", "Rat", "Caterpillar"],
     TerrainType: ["None", "TallGrass", "Boulder"],
   },
   tables: {
@@ -27,6 +25,18 @@ export default mudConfig({
         defence: "uint32",
       }
     },
+    Monsters: {
+      keySchema: {
+        id: "uint256",
+        owner: "bytes32",
+      },
+      schema: {
+        health: "uint32",
+        attack: "uint32",
+        defence: "uint32",
+        image: "string",
+      }
+    },
     EncounterTrigger: "bool",
     Encounterable: "bool",
     MapConfig: {
@@ -38,17 +48,16 @@ export default mudConfig({
         terrain: "bytes",
       },
     },
-    MonsterCatchAttempt: {
-      ephemeral: true,
-      dataStruct: false,
-      keySchema: {
-        encounter: "bytes32",
-      },
-      schema: {
-        result: "MonsterCatchResult",
-      },
-    },
-    Monster: "MonsterType",
+    // MonsterCatchAttempt: {
+    //   ephemeral: true,
+    //   dataStruct: false,
+    //   keySchema: {
+    //     encounter: "bytes32",
+    //   },
+    //   schema: {
+    //     result: "MonsterCatchResult",
+    //   },
+    // },
     Movable: "bool",
     Obstruction: "bool",
     OwnedBy: "bytes32",

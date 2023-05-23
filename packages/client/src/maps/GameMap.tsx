@@ -18,7 +18,6 @@ type Props = {
     emoji: string;
     entity: Entity;
   }[];
-  encounter?: ReactNode;
 };
 
 export const GameMap = ({
@@ -27,7 +26,6 @@ export const GameMap = ({
   onTileClick,
   terrain,
   players,
-  encounter,
 }: Props) => {
   const {
     network: { playerEntity },
@@ -38,11 +36,6 @@ export const GameMap = ({
 
   const [showEncounter, setShowEncounter] = useState(false);
   // Reset show encounter when we leave encounter
-  useEffect(() => {
-    if (!encounter) {
-      setShowEncounter(false);
-    }
-  }, [encounter]);
 
   return (
     <div className="inline-grid p-2 bg-lime-500 relative overflow-hidden">
@@ -72,17 +65,6 @@ export const GameMap = ({
                 onTileClick?.(x, y);
               }}
             >
-              {encounter && mainPlayerHere ? (
-                <div
-                  className="absolute z-10 animate-battle"
-                  style={{
-                    boxShadow: "0 0 0 100vmax black",
-                  }}
-                  onAnimationEnd={() => {
-                    setShowEncounter(true);
-                  }}
-                ></div>
-              ) : null}
               <div className="flex flex-wrap gap-1 items-center justify-center relative">
                 {terrainEmoji ? (
                   <div className="absolute inset-0 flex items-center justify-center text-3xl pointer-events-none">
@@ -99,20 +81,6 @@ export const GameMap = ({
           );
         })
       )}
-
-      {encounter && showEncounter ? (
-        <div
-          className="relative z-10 -m-2 bg-black text-white flex items-center justify-center"
-          style={{
-            gridColumnStart: 1,
-            gridColumnEnd: width + 1,
-            gridRowStart: 1,
-            gridRowEnd: height + 1,
-          }}
-        >
-          {encounter}
-        </div>
-      ) : null}
     </div>
   );
 };

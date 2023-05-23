@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 import { System } from "@latticexyz/world/src/System.sol";
-import { Encounter, EncounterData, Encounterable, EncounterTrigger, MapConfig, Monster, Movable, Hero, Obstruction, Player, Position } from "../codegen/Tables.sol";
-import { MonsterType } from "../codegen/Types.sol";
+import { Encounter, EncounterData, Encounterable, EncounterTrigger, MapConfig, Movable, Hero, Obstruction, Player, Position } from "../codegen/Tables.sol";
 import { addressToEntityKey } from "../addressToEntityKey.sol";
 import { positionToEntityKey } from "../positionToEntityKey.sol";
 
@@ -48,13 +47,6 @@ contract MapSystem is System {
     require(!Obstruction.get(position), "this space is obstructed");
 
     Position.set(player, x, y);
-
-    if (Encounterable.get(player) && EncounterTrigger.get(position)) {
-      uint256 rand = uint256(keccak256(abi.encode(player, position, blockhash(block.number - 1), block.difficulty)));
-      if (rand % 5 == 0) {
-        startEncounter(player);
-      }
-    }
   }
 
   function distance(uint32 fromX, uint32 fromY, uint32 toX, uint32 toY) internal pure returns (uint32) {
@@ -63,10 +55,10 @@ contract MapSystem is System {
     return deltaX + deltaY;
   }
 
-  function startEncounter(bytes32 player) internal {
-    bytes32 monster = keccak256(abi.encode(player, blockhash(block.number - 1), block.difficulty));
-    MonsterType monsterType = MonsterType((uint256(monster) % uint256(type(MonsterType).max)) + 1);
-    Monster.set(monster, monsterType);
-    Encounter.set(player, EncounterData({exists: true, monster: monster, catchAttempts: 0}));
-  }
+  // function startEncounter(bytes32 player) internal {
+  //   bytes32 monster = keccak256(abi.encode(player, blockhash(block.number - 1), block.difficulty));
+  //   MonsterType monsterType = MonsterType((uint256(monster) % uint256(type(MonsterType).max)) + 1);
+  //   Monster.set(monster, monsterType);
+  //   Encounter.set(player, EncounterData({exists: true, monster: monster, catchAttempts: 0}));
+  // }
 }
